@@ -9,19 +9,22 @@ import UIKit
 
 class FollowersListVC: UIViewController {
 
+    
     enum Section { case main }
     
     
     var userName: String!
     var collectionView: UICollectionView!
     var dataSource: UICollectionViewDiffableDataSource<Section, Follower>!
-    // todo: resume from here
+    var followers: [Follower] = []
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureVC()
         configureCollectionView()
         getFollowers()
+        configureDataSource()
     }
     
     
@@ -42,7 +45,8 @@ class FollowersListVC: UIViewController {
             
             switch result {
                 case .success(let followers):
-                    print(followers)
+                    self.followers.append(contentsOf: followers)
+                    self.updateData()
                     break
                     
                 case .failure(let error):
@@ -74,5 +78,27 @@ class FollowersListVC: UIViewController {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: configureThreeColumnFlowLayout())
         view.addSubview(collectionView)
         collectionView.register(FollowerCell.self, forCellWithReuseIdentifier: FollowerCell.reUseId)
+    }
+    
+    
+    func configureDataSource() {
+        dataSource = UICollectionViewDiffableDataSource<Section, Follower>(
+            collectionView: collectionView,
+            cellProvider: { (collectionView, indexPath, follower) -> UICollectionViewCell? in
+                let cell = collectionView.dequeueReusableCell(
+                        withReuseIdentifier: FollowerCell.reUseId,
+                        for: indexPath
+                    ) as! FollowerCell
+                cell.set(follower: follower)
+                return cell
+        })
+    }
+    
+    
+    func updateData() {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Follower>()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(followers)
+        DispatchQueue.main.async { self.dataSource.apply(snapshot, animatingDifferences: true) }
     }
 }
