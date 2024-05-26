@@ -68,7 +68,7 @@ class SearchVC: UIViewController {
     
     func configureTF() {
         view.addSubview(usernameTF)
-        usernameTF.delegate                                     = self
+        usernameTF.delegate = self
         
         NSLayoutConstraint.activate([
             usernameTF.topAnchor.constraint(equalTo: logoIV.bottomAnchor, constant: 45),
@@ -95,6 +95,7 @@ class SearchVC: UIViewController {
 
 extension SearchVC: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        pushFollowerListVC()
         return true
     }
 }
