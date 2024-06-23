@@ -51,7 +51,7 @@ class FollowersListVC: UIViewController {
         //            #warning("Dismiss Loading View")
         showLoadingView()
         
-        NetworkManager.shared.getFolower(for: userName, page: page) { [weak self] result in
+        NetworkManager.shared.getFollower(for: userName, page: page) { [weak self] result in
             guard let self = self else { return }
             dismissLoadingView()
             
