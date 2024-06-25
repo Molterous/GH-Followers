@@ -20,12 +20,14 @@ class GHTextField: UITextField {
     }
     
     
+    // custom init with placeholder text
     init(placeHolderText: String?) {
         super.init(frame: .zero)
         configure(placeHolderText: placeHolderText)
     }
     
     
+    // cofigure text input field
     private func configure(placeHolderText: String?) {
         translatesAutoresizingMaskIntoConstraints = false
         

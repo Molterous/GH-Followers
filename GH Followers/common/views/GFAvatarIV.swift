@@ -24,6 +24,7 @@ class GFAvatarIV: UIImageView {
     }
     
     
+    // configure image frame
     func configure() {
         layer.cornerRadius  = 16
         clipsToBounds       = true
@@ -32,6 +33,7 @@ class GFAvatarIV: UIImageView {
     }
     
     
+    // util func to download and cache file
     func downloadImage(from urlString: String) {
         
         let cacheKey = NSString(string: urlString)

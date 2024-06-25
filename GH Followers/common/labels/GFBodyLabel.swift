@@ -1,5 +1,5 @@
 //
-//  GFTitleLabel.swift
+//  GFBodyLabel.swift
 //  GH Followers
 //
 //  Created by Aakash Choudhary on 18/04/24.
@@ -7,9 +7,8 @@
 
 import UIKit
 
-class GFTitleLabel: UILabel {
+class GFBodyLabel: UILabel {
 
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
@@ -21,19 +20,21 @@ class GFTitleLabel: UILabel {
     }
     
     
-    init(textAlignment: NSTextAlignment, textSize: CGFloat) {
+    // custom init
+    init(textAlignment: NSTextAlignment) {
         super.init(frame: .zero)
         self.textAlignment = textAlignment
-        self.font          = UIFont.systemFont(ofSize: textSize, weight: .bold)
         configure()
     }
     
     
+    // configure label
     func configure() {
         translatesAutoresizingMaskIntoConstraints = false
-        textColor                   = .label
+        font                        = UIFont.preferredFont(forTextStyle: .body)
+        textColor                   = .secondaryLabel
         adjustsFontSizeToFitWidth   = true
-        minimumScaleFactor          = 0.9
-        lineBreakMode               = .byTruncatingTail
+        minimumScaleFactor          = 0.75
+        lineBreakMode               = .byWordWrapping
     }
 }

@@ -16,7 +16,7 @@ class FollowersListVC: UIViewController {
     var userName: String!
     var page                = 1
     var hasMoreFollowers    = true
-    var isSearching         = true
+    var isSearching         = false
     
     var collectionView: UICollectionView!
     var dataSource: UICollectionViewDiffableDataSource<Section, Follower>!

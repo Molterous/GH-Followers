@@ -24,6 +24,7 @@ class GFEmptyStateView: UIView {
     }
     
     
+    // custom error messgae init
     init(message: String) {
         super.init(frame: .zero)
         messageLabel.text = message
@@ -31,6 +32,7 @@ class GFEmptyStateView: UIView {
     }
     
     
+    // congfigure empty state image view
     func configure() {
         addSubview(messageLabel)
         addSubview(logoIV)
