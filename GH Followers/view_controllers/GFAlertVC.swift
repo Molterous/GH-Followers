@@ -82,12 +82,13 @@ class GFAlertVC: UIViewController {
         submitBtn.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
 
         NSLayoutConstraint.activate([
-            submitBtn.bottomAnchor     .constraint(equalTo: containerView.topAnchor,       constant: -contentPadding),
+            submitBtn.bottomAnchor     .constraint(equalTo: containerView.bottomAnchor,       constant: -contentPadding),
             submitBtn.leadingAnchor    .constraint(equalTo: containerView.leadingAnchor,   constant:  contentPadding),
             submitBtn.trailingAnchor   .constraint(equalTo: containerView.trailingAnchor,  constant: -contentPadding),
             submitBtn.heightAnchor     .constraint(equalToConstant: 44),
         ])
     }
+    
     
     @objc func dismissVC() {
         dismiss(animated: true)
@@ -104,7 +105,7 @@ class GFAlertVC: UIViewController {
             bodyLabel.topAnchor        .constraint(equalTo: titleLabel.bottomAnchor,       constant: 8),
             bodyLabel.leadingAnchor    .constraint(equalTo: containerView.leadingAnchor,   constant:  contentPadding),
             bodyLabel.trailingAnchor   .constraint(equalTo: containerView.trailingAnchor,  constant: -contentPadding),
-            bodyLabel.topAnchor        .constraint(equalTo: submitBtn.topAnchor,           constant: -12),
+            bodyLabel.bottomAnchor     .constraint(equalTo: submitBtn.topAnchor,           constant: -12),
         ])
     }
 }

@@ -25,13 +25,19 @@ class UserInfoVC: UIViewController {
     let reposItemView       = UIView()
     let followersItemView   = UIView()
     let dateLabel           = GFBodyLabel(textAlignment: .center)
+    
+    weak var followerListVcDelegate: FollowersListVCDelegate?
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor                = .systemBackground
         
-        let doneBtn                         = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
+        let doneBtn                         = UIBarButtonItem(
+                                                barButtonSystemItem: .done,
+                                                target: self,
+                                                action: #selector(dismissVC)
+                                              )
         navigationItem.rightBarButtonItem   = doneBtn
         
         layoutUI()
@@ -150,5 +156,16 @@ extension UserInfoVC: UserInfoVCDelegate {
     
     func didTapGetFollowers(for user: User) {
         
+        guard user.followers != 0 else {
+            presentGFAlertOnMainThread(
+                title: "No Followers",
+                message: "This user has no followers.",
+                buttonTitle: "So Sad"
+            )
+            return
+        }
+        
+        followerListVcDelegate?.didRequestFollowers(for: user.login)
+        dismissVC()
     }
 }

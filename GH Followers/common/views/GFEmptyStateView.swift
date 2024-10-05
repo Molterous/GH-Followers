@@ -50,9 +50,9 @@ class GFEmptyStateView: UIView {
             messageLabel.heightAnchor.constraint(equalToConstant: 200),
             
             logoIV.widthAnchor.constraint(    equalTo: self.widthAnchor,    multiplier: 1.3),
-            logoIV.heightAnchor.constraint(   equalTo: self.heightAnchor,   multiplier: 1.3),
+            logoIV.heightAnchor.constraint(   equalTo: self.heightAnchor,   multiplier: 0.6),
             logoIV.trailingAnchor.constraint( equalTo: self.trailingAnchor, constant: 170),
-            logoIV.bottomAnchor.constraint(   equalTo: self.bottomAnchor,   constant: 40),
+            logoIV.bottomAnchor.constraint(   equalTo: self.bottomAnchor,   constant: -30),
             
         ])
     }

@@ -57,6 +57,7 @@ extension UIViewController {
         let emptyStateView      = GFEmptyStateView(message: message)
         emptyStateView.frame    = view.bounds
         view.addSubview(emptyStateView)
+        view.bringSubviewToFront(emptyStateView)
     }
     
     

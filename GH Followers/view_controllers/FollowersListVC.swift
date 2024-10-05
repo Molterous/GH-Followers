@@ -7,9 +7,14 @@
 
 import UIKit
 
+
+protocol FollowersListVCDelegate: AnyObject {
+    func didRequestFollowers(for userName: String)
+}
+
+
 class FollowersListVC: UIViewController {
 
-    // resume from 5:50:34.
     enum Section { case main }
     
     
@@ -26,11 +31,61 @@ class FollowersListVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .add,
+            target: self,
+            action: #selector(addToFavourites)
+        )
+        
         configureVC()
         cofigureSearchController()
         configureCollectionView()
         getFollowers(for: userName, at: page)
         configureDataSource()
+    }
+    
+    
+    @objc func addToFavourites() {
+        showLoadingView()
+        
+        NetworkManager.shared.getUserInfo(for: userName) { [weak self] result in
+            guard let self = self else { return }
+            
+            self.dismissLoadingView()
+            
+            switch result {
+                case .success(let user):
+                    let favourite = Follower(login: user.login, avatarUrl: user.avatarUrl)
+                    
+                    PersistanceManager.updateWith(with: favourite, for: .add) { [weak self] error in
+                        guard let self = self else { return }
+                        
+                        guard let error = error else {
+                            
+                            self.presentGFAlertOnMainThread(
+                                title: "Success!!",
+                                message: "You have successfully favourited this user.",
+                                buttonTitle: "Hooray"
+                            )
+                            return
+                        }
+                        
+                        self.presentGFAlertOnMainThread(
+                            title: "Something went wrong",
+                            message: error.rawValue,
+                            buttonTitle: "OK"
+                        )
+                    }
+                
+                case .failure(let error):
+                    self.presentGFAlertOnMainThread(
+                        title: "Something went wrong",
+                        message: error.rawValue,
+                        buttonTitle: "OK"
+                    )
+            }
+        }
     }
     
     
@@ -133,8 +188,9 @@ extension FollowersListVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let follower        = isSearching ? filterFollower[indexPath.item] : followers[indexPath.item]
         
-        let destVC          = UserInfoVC()
-        destVC.userName     = follower.login
+        let destVC                      = UserInfoVC()
+        destVC.userName                 = follower.login
+        destVC.followerListVcDelegate   = self
         
         let navController   = UINavigationController(rootViewController: destVC)
         present(navController, animated: true)
@@ -157,4 +213,21 @@ extension FollowersListVC: UISearchResultsUpdating, UISearchBarDelegate {
         filterFollower  = []
         updateData(on: followers)
     }
+}
+
+
+extension FollowersListVC: FollowersListVCDelegate {
+    
+    func didRequestFollowers(for userName: String) {
+        self.userName   = userName
+        self.title      = userName
+        self.page       = 1
+        
+        self.followers.removeAll()
+        self.filterFollower.removeAll()
+        collectionView.setContentOffset(.zero, animated: true)
+        
+        getFollowers(for: userName, at: page)
+    }
+    
 }

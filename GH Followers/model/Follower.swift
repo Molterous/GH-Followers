@@ -11,6 +11,11 @@ class Follower: Codable, Hashable {
     var login: String
     var avatarUrl: String
     
+    init(login: String, avatarUrl: String) {
+        self.login = login
+        self.avatarUrl = avatarUrl
+    }
+    
     static func == (lhs: Follower, rhs: Follower) -> Bool {
         return lhs.login == rhs.login
     }
